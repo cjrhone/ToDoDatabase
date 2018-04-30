@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System;
 using MySql.Data.MySqlClient;
 
-
 namespace ToDoList.Models
 {
   public class Item
@@ -17,6 +16,12 @@ namespace ToDoList.Models
       _description = description;
       _instances.Add(this);
       _id = _instances.Count;
+    }
+    public Item (string description, int id)
+    {
+      _description = description;
+      _instances.Add(this);
+      _id = id;
     }
     public string GetDescription()
     {
