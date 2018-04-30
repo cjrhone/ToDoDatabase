@@ -12,3 +12,5 @@
 /Users/Guest/Desktop/ToDoList.Solution/ToDoList/obj/Debug/netcoreapp1.1/ToDoList.AssemblyInfo.cs
 /Users/Guest/Desktop/ToDoList.Solution/ToDoList/obj/Debug/netcoreapp1.1/ToDoList.dll
 /Users/Guest/Desktop/ToDoList.Solution/ToDoList/obj/Debug/netcoreapp1.1/ToDoList.pdb
+/Users/Guest/Desktop/ToDoList.Solution/ToDoList/bin/Debug/netcoreapp1.1/ToDoList.dll
+/Users/Guest/Desktop/ToDoList.Solution/ToDoList/bin/Debug/netcoreapp1.1/ToDoList.pdb
