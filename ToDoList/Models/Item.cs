@@ -8,19 +8,35 @@ namespace ToDoList.Models
   {
     private string _description;
     private int _id;
-    // private static List<Item> _instances = new List<Item> {};
-    //omitted because we're now using database to store and pull information
 
-
-    // public Item (string description)
-    // {
-    //   _description = description;
-    // }
     public Item (string description, int id=0)
-    //int id=0 defaults the int id value to 0 IF there is nothing passed through 
+    //int id=0 defaults the int id value to 0 IF there is nothing passed through
     {
       _description = description;
       _id = id;
+    }
+
+    public void Save()
+    {
+      MySqlConnection conn = DB.Connection();
+           conn.Open();
+
+           var cmd = conn.CreateCommand() as MySqlCommand;
+           cmd.CommandText = @"INSERT INTO items (description) VALUES (@ItemDescription);";
+
+           MySqlParameter description = new MySqlParameter();
+           description.ParameterName = "@ItemDescription";
+           description.Value = _description;
+           cmd.Parameters.Add(description);
+
+           cmd.ExecuteNonQuery();
+           _id = (int) cmd.LastInsertedId;  // Notice the slight update to this line of code!
+
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
     }
     public string GetDescription()
     {
@@ -98,6 +114,25 @@ namespace ToDoList.Models
            conn.Dispose();
        }
        //...including an if statement that disposes of the connection if it's not null.
+      }
+
+      public override bool Equals(System.Object otherItem)
+      //The override keyword indicates to the compiler that the method we define under it should replace the method of the same name built into C#
+      //override is best practice for Equals because...hey...why not
+      //Equals() accepts any type of object, we must declare its argument as "System.Object"
+      {
+        if (!(otherItem is Item))
+        {
+          return false;
+        }
+        else
+        {
+          Item newItem = (Item) otherItem;
+          //when we change an object from one type to another, its called "TYPE CASTING"
+          bool idEquality = (this.GetId() == newItem.GetId());
+          bool descriptionEquality = (this.GetDescription() == newItem.GetDescription());
+          return (idEquality && descriptionEquality);
+        }
       }
 
     // public static Item Find(int searchId)
