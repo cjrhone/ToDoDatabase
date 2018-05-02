@@ -16,7 +16,6 @@ namespace ToDoList.Models
     {
       _description = description;
       _instances.Add(this);
-      _id = _instances.Count;
     }
     public Item (string description, int id)
     {
@@ -39,26 +38,42 @@ namespace ToDoList.Models
     public static List<Item> GetAll()
      {
        List<Item> allItems = new List<Item> {};
-      //  MySqlConnection conn = DB.Connection();
-      //  conn.Open();
-      //  MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
-      //  cmd.CommandText = @"SELECT * FROM items;";
-      //  MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
-      //  while(rdr.Read())
-      //  {
-      //    int itemId = rdr.GetInt32(0);
-      //    string itemDescription = rdr.GetString(1);
-      //    Item newItem = new Item(itemDescription, itemId);
-      //    allItems.Add(newItem);
-      //  }
-      //  conn.Close();
-      //  if (conn != null)
-      //  {
-      //      conn.Dispose();
-      //  }
+       //empty list which we will place information from the database
+       MySqlConnection conn = DB.Connection();
+       //passes conn to --> database connection
+       conn.Open();
+       //open database
+       MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+       //passes cmd --> MySqlCommand for...
+       cmd.CommandText = @"SELECT * FROM items;";
+       //showing all items from database
+       MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+       //passes rdr --> MySqlCommand to read SQL database
+       while(rdr.Read())
+       //rdr.Read() method sends the SQL Commands to the database and collects whatever the database returns in response to those commands
+       //While looop will take each row of data returned from the database and perform actions with it
+       {
+         int itemId = rdr.GetInt32(0);
+         //will receive the first column of data, where our Item's id values are stored (index 0)
+         string itemDescription = rdr.GetString(1);
+         //will receive the second column data, where our Item descriptions are stored (index 1)
+         Item newItem = new Item(itemDescription, itemId);
+         //instantiate new Item with receieved paramaters
+         allItems.Add(newItem);
+         //Add instantiated Item into allItems list
+       }
+       conn.Close();
+       //after closing connection we manually confirm whether the connection exists...
+       if (conn != null)
+       //...If the connection DOES still exist...
+       {
+           conn.Dispose();
+           //...fully clear the connection from memory
+       }
        return allItems;
+       //otherwise show all items from database
      }
-      // return _instances;
+
     public void Save()
     {
       _instances.Add(this);
