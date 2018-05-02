@@ -15,12 +15,10 @@ namespace ToDoList.Models
     public Item (string description)
     {
       _description = description;
-      _instances.Add(this);
     }
     public Item (string description, int id)
     {
       _description = description;
-      _instances.Add(this);
       _id = id;
     }
     public string GetDescription()
@@ -81,7 +79,7 @@ namespace ToDoList.Models
     public static void ClearAll()
     {
        MySqlConnection conn = DB.Connection();
-       //Creates conn object represting our connection to the database
+       //Creates conn object representing our connection to the database
        conn.Open();
        //manually opens the connection ( conn ) with conn.Open()
 
@@ -99,8 +97,6 @@ namespace ToDoList.Models
            conn.Dispose();
        }
        //...including an if statement that disposes of the connection if it's not null.
-       //Testing the commit, delete this comment later ,jahsjdhsajdksahdkjsahdkajs
-       //test
       }
 
     public static Item Find(int searchId)
