@@ -8,7 +8,8 @@ namespace ToDoList.Models
   {
     private string _description;
     private int _id;
-    private static List<Item> _instances = new List<Item> {};
+    // private static List<Item> _instances = new List<Item> {};
+    //omitted because we're now using database to store and pull information
 
 
     public Item (string description)
