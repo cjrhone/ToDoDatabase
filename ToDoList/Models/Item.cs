@@ -12,11 +12,12 @@ namespace ToDoList.Models
     //omitted because we're now using database to store and pull information
 
 
-    public Item (string description)
-    {
-      _description = description;
-    }
-    public Item (string description, int id)
+    // public Item (string description)
+    // {
+    //   _description = description;
+    // }
+    public Item (string description, int id=0)
+    //int id=0 defaults the int id value to 0 IF there is nothing passed through 
     {
       _description = description;
       _id = id;
@@ -72,10 +73,10 @@ namespace ToDoList.Models
        //otherwise show all items from database
      }
 
-    public void Save()
-    {
-      _instances.Add(this);
-    }
+    // public void Save()
+    // {
+    //   _instances.Add(this);
+    // }
     public static void ClearAll()
     {
        MySqlConnection conn = DB.Connection();
@@ -99,9 +100,9 @@ namespace ToDoList.Models
        //...including an if statement that disposes of the connection if it's not null.
       }
 
-    public static Item Find(int searchId)
-    {
-     return _instances[searchId-1];
-    }
+    // public static Item Find(int searchId)
+    // {
+    //  return _allItems[searchId-1];
+    // }
   }
 }
