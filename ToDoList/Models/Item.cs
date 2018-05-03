@@ -30,7 +30,11 @@ namespace ToDoList.Models
            cmd.Parameters.Add(description);
 
            cmd.ExecuteNonQuery();
-           _id = (int) cmd.LastInsertedId;  // Notice the slight update to this line of code!
+           //Interacting with databases eithor: Modifying Data or Retrieving Information
+           //ExecuteNonQuery modifies the database by saving
+           _id = (int) cmd.LastInsertedId;
+           //GATHERS data assigned IDs
+           //Explicit Cast --> (int) converts cmd.LastInsertedId to accept long data type (64-bit data)
 
             conn.Close();
             if (conn != null)
@@ -133,6 +137,50 @@ namespace ToDoList.Models
           bool descriptionEquality = (this.GetDescription() == newItem.GetDescription());
           return (idEquality && descriptionEquality);
         }
+      }
+
+      public static Item Find(int id)
+      {
+        MySqlConnection conn = DB.Connection();
+        conn.Open()
+
+        var cmd = conn.CreateCommand() as MySqlCommand;
+        cmd.CommandText = @"SELECT * FROM 'items' WHERE id = @thisId;";
+        //@thisId is the placeholder for the ID property of the Item we're seeking in the database
+
+        MySqlParameter thisId = new MySqlParameter();
+        //Create a MySqlParamter called thisId
+        thisId.ParameterName = "@thisId";
+        //Define ParameterName property as @thisId to match the SQL command
+        thisId.Value = id;
+        //Define Value property of thisId as id
+        cmd.Parameters.Add(thisId);
+        //Adds thisId to Parameters property of cmd
+
+        var rdr = cmd.ExecuteReader() as MySqlDataReader;
+
+        int itemId = 0;
+        string itemDescription = "";
+        //defined outside of while loop to ensure we don't hit unanticipated errors ( like not being able to define values)
+
+        while (rdr.Read())
+        //To initiate reading the database, we run a while loop
+        {
+          itemId = rdr.GetInt32(0);
+          //corresponds to the index positions
+          itemDescription = rdr.GetString(1);
+
+        }
+
+        Item foundItem = new Item(itemDescription, itemId);
+
+        conn.Close();
+        if (conn != null)
+        {
+          conn.Dispose();
+        }
+
+        return foundItem;
       }
 
     // public static Item Find(int searchId)
